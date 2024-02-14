@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: curd-application
+  labels:
+    app: curd-application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curd-application
+  template:
+    metadata:
+      labels:
+          app: curd-application
+    spec:
+      containers:
+        - name: curd-application
+          imagePullPolicy: Always
+          image: ankur1994a/spring-curd-rest-demo-with-jpa-curd-application
+          env:
+            - name : SPRING_PROFILES_ACTIVE
+              value : "docker"
+
+---
+# ... Service YAML definition
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: curd-application
+spec:
+  type: ClusterIP
+  selector:
+    app: curd-application
+  ports:
+    - port: 8080
+      targetPort: 8080
+
